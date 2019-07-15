@@ -1,11 +1,45 @@
 package leetcode;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class 无重复的最长字串 {
-    
+    //滑动窗口的方法
 	public int lengthOfLongestSubstring(String s) {		
+		int start=0;
+		int max=0;
+		int end=0;
+		if(s.length()==0) return 0;
+		Map<Character,Integer> map=new HashMap<>();
+		for(;end<s.length();) {
+			if(map.containsKey(s.charAt(end))) {
+				if(map.get(s.charAt(end))<start) {
+					map.replace(s.charAt(end), end);
+					end++; 
+				}
+				else {
+				max=Math.max(max,end-start);
+				if(start!=map.get(s.charAt(end)))
+				start=map.get(s.charAt(end))+1;
+				else 
+					start++;
+				map.replace(s.charAt(end), end);
+				end++; 
+				}
+				
+			}
+			else{
+				map.put(s.charAt(end), end); 
+				end++;
+			}	
+		}
+		//if(start==0) max=Math.max(max,end-start);
+		 max=Math.max(max,end-start);
+		return max;
+	}
+	public int lengthOfLongestSubstring暴力法(String s) {		
 		int n=0;
 		char[] c=new char[s.length()];
 		c=s.toCharArray();
@@ -25,7 +59,7 @@ public class 无重复的最长字串 {
 		return n;
 	}
 	public static void main(String[] args) {
-		String t="shggujjbnom";
+		String t="hjpjfg";
 		无重复的最长字串 j=new 无重复的最长字串();
 		System.out.println(j.lengthOfLongestSubstring(t));
 	}
